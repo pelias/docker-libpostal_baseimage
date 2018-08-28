@@ -7,9 +7,16 @@ RUN apt-get update && \
     apt-get install -y autoconf automake libtool pkg-config python && \
     rm -rf /var/lib/apt/lists/*
 
-# install libpostal
+# clone libpostal
 RUN git clone https://github.com/openvenues/libpostal /code/libpostal
 WORKDIR /code/libpostal
+
+# patch libpostal
+# https://github.com/pelias/interpolation/issues/132
+COPY patchfile /tmp/patchfile
+RUN git apply /tmp/patchfile
+
+# install libpostal
 RUN ./bootstrap.sh && \
     ./configure --datadir=/usr/share/libpostal && \
     make && make check && make install && \
