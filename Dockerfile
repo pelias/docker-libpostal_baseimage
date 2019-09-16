@@ -11,11 +11,6 @@ RUN apt-get update && \
 RUN git clone https://github.com/openvenues/libpostal /code/libpostal
 WORKDIR /code/libpostal
 
-# patch libpostal
-# https://github.com/pelias/interpolation/issues/132
-COPY patchfile /tmp/patchfile
-RUN git apply /tmp/patchfile
-
 # install libpostal
 RUN ./bootstrap.sh && \
     ./configure --datadir=/usr/share/libpostal && \
