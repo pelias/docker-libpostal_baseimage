@@ -1,5 +1,5 @@
 # base image
-FROM pelias/baseimage
+FROM pelias/baseimage:nodejs-10
 
 # libpostal apt dependencies
 # note: this is done in one command in order to keep down the size of intermediate containers
