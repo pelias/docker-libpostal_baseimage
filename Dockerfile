@@ -1,11 +1,10 @@
-# base image
-FROM pelias/baseimage
+# builder image
+FROM pelias/baseimage as builder
 
 # libpostal apt dependencies
 # note: this is done in one command in order to keep down the size of intermediate containers
 RUN apt-get update && \
-    apt-get install -y autoconf automake libtool pkg-config python && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y autoconf automake libtool pkg-config python
 
 # clone libpostal
 RUN git clone https://github.com/openvenues/libpostal /code/libpostal
@@ -13,6 +12,12 @@ WORKDIR /code/libpostal
 
 # install libpostal
 RUN ./bootstrap.sh && \
-    ./configure --datadir=/usr/share/libpostal && \
+    ./configure --datadir=/usr/share/libpostal --prefix=/libpostal && \
     make && make check && make install && \
     ldconfig
+
+# main image
+FROM pelias/baseimage
+
+COPY --from=builder /usr/share/libpostal /usr/share/libpostal
+copy --from=builder /libpostal /
