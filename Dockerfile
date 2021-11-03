@@ -12,12 +12,12 @@ WORKDIR /code/libpostal
 
 # install libpostal
 RUN ./bootstrap.sh && \
-    ./configure --datadir=/usr/share/libpostal --prefix=/libpostal && \
-    make && make check && make install && \
+    ./configure --datadir=/usr/share/libpostal && \
+    make && make check && DESTDIR=/libpostal make install && \
     ldconfig
 
 # main image
 FROM pelias/baseimage
 
 COPY --from=builder /usr/share/libpostal /usr/share/libpostal
-COPY --from=builder /libpostal /usr/local
+COPY --from=builder /libpostal /
