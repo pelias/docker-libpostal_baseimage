@@ -20,4 +20,4 @@ RUN ./bootstrap.sh && \
 FROM pelias/baseimage
 
 COPY --from=builder /usr/share/libpostal /usr/share/libpostal
-copy --from=builder /libpostal /
+COPY --from=builder /libpostal /usr/local
