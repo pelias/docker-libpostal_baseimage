@@ -4,7 +4,7 @@ FROM pelias/baseimage as builder
 # libpostal apt dependencies
 # note: this is done in one command in order to keep down the size of intermediate containers
 RUN apt-get update && \
-    apt-get install -y autoconf automake libtool pkg-config python
+    apt-get install -y build-essential autoconf automake libtool pkg-config python
 
 # clone libpostal
 RUN git clone https://github.com/openvenues/libpostal /code/libpostal && \
