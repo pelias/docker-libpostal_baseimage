@@ -7,10 +7,7 @@ RUN apt-get update && \
     apt-get install -y build-essential autoconf automake libtool pkg-config python3
 
 # clone libpostal
-RUN git clone https://github.com/openvenues/libpostal /code/libpostal && \
-# pin to libpostal version not affected by https://github.com/openvenues/libpostal/issues/592
-  cd /code/libpostal && git checkout a97717f2b9f8fba03d25442f2bd88c15e86ec81b
-
+RUN git clone https://github.com/openvenues/libpostal /code/libpostal
 WORKDIR /code/libpostal
 
 # install libpostal
