@@ -11,10 +11,19 @@ RUN git clone https://github.com/openvenues/libpostal /code/libpostal
 WORKDIR /code/libpostal
 
 # install libpostal
-RUN ./bootstrap.sh && \
-    ./configure --datadir=/usr/share/libpostal && \
-    make && make check && DESTDIR=/libpostal make install && \
-    ldconfig
+RUN ./bootstrap.sh
+
+# https://github.com/openvenues/libpostal/pull/632#issuecomment-1648303654
+ARG TARGETARCH
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      ./configure --datadir='/usr/share/libpostal' --disable-sse2; \
+    else \
+      ./configure --datadir='/usr/share/libpostal'; \
+    fi
+
+RUN make -j4
+RUN DESTDIR=/libpostal make install
+RUN ldconfig
 
 # main image
 FROM pelias/baseimage
