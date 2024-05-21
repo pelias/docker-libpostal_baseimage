@@ -21,12 +21,27 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
       ./configure --datadir='/usr/share/libpostal'; \
     fi
 
+# compile
 RUN make -j4
 RUN DESTDIR=/libpostal make install
 RUN ldconfig
 
+# copy address_parser executable
+RUN cp /code/libpostal/src/.libs/address_parser /libpostal/usr/local/bin/
+
+# -------------------------------------------------------------
+
 # main image
 FROM pelias/baseimage
 
+# copy data
 COPY --from=builder /usr/share/libpostal /usr/share/libpostal
+
+# copy build
 COPY --from=builder /libpostal /
+
+# ensure /usr/local/lib is on LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+
+# test model / executable load correctly
+RUN echo '12 example lane, example' | address_parser
