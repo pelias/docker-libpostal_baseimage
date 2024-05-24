@@ -16,9 +16,9 @@ RUN ./bootstrap.sh
 # https://github.com/openvenues/libpostal/pull/632#issuecomment-1648303654
 ARG TARGETARCH
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
-      ./configure --datadir='/usr/share/libpostal' --disable-sse2; \
+      ./configure --datadir='/usr/share/libpostal' --disable-sse2 MODEL=senzing; \
     else \
-      ./configure --datadir='/usr/share/libpostal'; \
+      ./configure --datadir='/usr/share/libpostal' MODEL=senzing; \
     fi
 
 # compile
