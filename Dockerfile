@@ -32,7 +32,7 @@ RUN cp /code/libpostal/src/.libs/address_parser /libpostal/usr/local/bin/
 # -------------------------------------------------------------
 
 # main image
-FROM pelias/baseimage
+FROM pelias/baseimage:nodejs-20
 
 # copy data
 COPY --from=builder /usr/share/libpostal /usr/share/libpostal
