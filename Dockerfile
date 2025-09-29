@@ -1,5 +1,5 @@
 # builder image
-FROM pelias/baseimage as builder
+FROM pelias/baseimage AS builder
 
 # libpostal apt dependencies
 # note: this is done in one command in order to keep down the size of intermediate containers
@@ -15,11 +15,12 @@ RUN ./bootstrap.sh
 
 # https://github.com/openvenues/libpostal/pull/632#issuecomment-1648303654
 ARG TARGETARCH
-RUN if [ "$TARGETARCH" = "arm64" ]; then \
-      ./configure --datadir='/usr/share/libpostal' --disable-sse2; \
-    else \
-      ./configure --datadir='/usr/share/libpostal'; \
-    fi
+RUN case "$TARGETARCH" in \
+      arm*|aarch*) \
+        ./configure --datadir='/usr/share/libpostal' --disable-sse2 ;; \
+      *) \
+        ./configure --datadir='/usr/share/libpostal' ;; \
+    esac
 
 # compile
 RUN make -j4
