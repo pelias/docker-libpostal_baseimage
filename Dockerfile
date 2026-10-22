@@ -17,9 +17,9 @@ RUN ./bootstrap.sh
 ARG TARGETARCH
 RUN case "$TARGETARCH" in \
       arm*|aarch*) \
-        ./configure --datadir='/usr/share/libpostal' --disable-sse2 ;; \
+        ./configure --datadir='/usr/share/libpostal' --disable-sse2 MODEL=senzing ;; \
       *) \
-        ./configure --datadir='/usr/share/libpostal' ;; \
+        ./configure --datadir='/usr/share/libpostal' MODEL=senzing ;; \
     esac
 
 # compile
